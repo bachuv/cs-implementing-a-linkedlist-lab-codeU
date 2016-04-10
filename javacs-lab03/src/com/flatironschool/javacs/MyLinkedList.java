@@ -85,7 +85,17 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		// TODO: fill this in
+        Node newNode = new Node(element);
+        //always check if you are adding to the head or not
+        if(index == 0){
+            newNode.next = head;
+            head = newNode;
+        }else{//change nodes to have the correct next
+            Node prev = getNode(index-1);
+            newNode.next = prev.next;
+            prev.next = newNode;
+        }
+        size++;//increment the size because you added a node
 	}
 
 	@Override
@@ -146,7 +156,13 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: fill this in
+        //go through every ith position until you find the target
+        for(int i = 0; i < size; i++){
+            if(equals(target, get(i))){//get(i) returns the object at the ith position
+                return i;
+            }
+        }
+        
 		return -1;
 	}
 
@@ -201,8 +217,23 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public boolean remove(Object obj) {
-		// TODO: fill this in
-		return false;
+		//get the index of input obj
+        int i = indexOf(obj);
+        if(i == 0){//check if the obj to remove is the head
+            if(size > 1){
+                head = getNode(1);
+            }else{
+                head = null;
+            }
+            size--;
+            return true;
+        }else if (i > 0){//change next's accordingly
+            Node prev = getNode(i-1);
+            prev.next = getNode(i).next;
+            size--;
+            return true;
+        }
+		return false;//obj was not found
 	}
 
 	@Override
